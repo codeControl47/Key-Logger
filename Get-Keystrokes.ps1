@@ -37,9 +37,8 @@ while($true){
   $endDate = Get-Date
   $diff = $endDate - $startDate
   $sec = $diff.Seconds
+  Write-Output $sec
   if($sec -ge ($period*60)){
-    $stopwatch.Stop()
-    $stopwatch = [system.diagnostics.stopwatch]::StartNew();
     $content = Get-Content 'C:\users\hilld\file.txt'
     if($content.Count -ne 3 -Or $content[2] -ne ''){
       $eDate = Get-Date -Format "MM/dd/yyyy - HH:mm:ss"
