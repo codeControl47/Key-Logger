@@ -36,9 +36,9 @@ $caps = 0
 while($true){
   $endDate = Get-Date
   $diff = $endDate - $startDate
-  $sec = $diff.Seconds
+  $min = $diff.TotalMinutes
   Write-Output $sec
-  if($sec -ge ($period*60)){
+  if($min -ge $period){
     $content = Get-Content 'C:\users\hilld\file.txt'
     if($content.Count -ne 3 -Or $content[2] -ne ''){
       $eDate = Get-Date -Format "MM/dd/yyyy - HH:mm:ss"
