@@ -39,7 +39,7 @@ while($true){
   $min = $diff.TotalMinutes
   Write-Output $sec
   if($min -ge $period){
-    $content = Get-Content 'C:\users\hilld\file.txt'
+    $content = Get-Content $path
     if($content.Count -ne 3 -Or $content[2] -ne ''){
       $eDate = Get-Date -Format "MM/dd/yyyy-HH:mm:ss"
       Add-Content $path $eDate
